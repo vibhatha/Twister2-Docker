@@ -1,0 +1,33 @@
+syntax = "proto3";
+package tws.proto.taskscheduler;
+
+option java_package = "edu.iu.dsc.tws.proto.system";
+option java_outer_classname = "TaskSchedulingPlans";
+
+message Resource {
+    double availableCPU = 1;
+    double availableMemory = 2;
+    double availableDisk = 3;
+}
+message TaskInstancePlan {
+    int32 taskid = 1;
+    string taskname = 2;
+    int32 taskindex = 3;
+    Resource resource = 4;
+}
+message ContainerPlan {
+    int32 containerid = 1;
+    repeated TaskInstancePlan taskinstanceplan = 2;
+    Resource requiredresource = 3;
+    Resource scheduledresource = 4;
+}
+message TaskSchedulePlan {
+    int32 jobid = 1;
+    repeated ContainerPlan containerplan = 2;
+}
+
+message TaskSchedulePlanList {
+    int32 jobid = 1;
+    repeated TaskSchedulePlan taskscheduleplan = 2;
+    //required int32 jobid = 1;
+}

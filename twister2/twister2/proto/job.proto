@@ -1,0 +1,63 @@
+syntax = "proto3";
+package tws.proto.job;
+
+option java_package = "edu.iu.dsc.tws.proto.system.job";
+option java_outer_classname = "JobAPI";
+
+enum JobFormatType {
+    JAR = 0;
+    ZIP = 1;
+}
+
+message JobFormat {
+    JobFormatType type = 1;
+    string job_file = 2;
+}
+
+// defines the job parameters. This will define the required resources for the job,
+// what type of a job this is (a basic container job, fully featured dataflow job etc)
+message Config {
+    message KeyValue {
+        string key = 1;
+        // Only one of the below are set
+        string value = 2;
+        bytes serialized_value = 3;
+    }
+    repeated KeyValue kvs = 1;
+    map<string, bytes> config_byte_map = 2;
+}
+
+// resources for a worker
+// cpu as a double, can be fractional
+// RAM as mega bytes
+// Disk as giga bytes. Dist is volatile disk.
+message WorkerComputeResource {
+    double cpu = 1;
+    int32 ram = 2;
+    double disk = 3;
+}
+
+// a job can have many types of WorkerComputeResources
+// for each resource, we specify the number of workers
+// numberOfWorkers in JobResources is the total of all workers in the job
+message JobResources {
+    message ResourceType {
+        int32 numberOfWorkers = 1;
+        WorkerComputeResource workerComputeResource = 2;
+    }
+    repeated ResourceType resources = 1;
+}
+
+// this is a Twister job.
+message Job {
+    string jobName = 1;
+    // worker class to run
+    string workerClassName = 2;
+    int32 numberOfWorkers = 3;
+    // the requested resources
+    JobResources jobResources = 4;
+    // the configurations specified
+    Config config = 5;
+    // how the job is layed out
+    JobFormat job_format = 6;
+}

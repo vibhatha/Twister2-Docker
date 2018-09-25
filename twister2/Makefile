@@ -1,0 +1,69 @@
+clean:
+	bazel clean
+
+build:
+	bazel build --config=ubuntu twister2/...
+
+package:
+	bazel build --config=ubuntu //scripts/package:tarpkgs
+
+all:
+	build
+	package
+
+dist:
+	tar xzf bazel-bin/scripts/package/twister2-client.tar.gz
+
+env:
+	if [ -d "bazel-bin/scripts/package/twister2-dist" ]; then rm -rf bazel-bin/scripts/package/twister2-dist; tar xzf bazel-bin/scripts/package/twister2-client.tar.gz; cp twister2-dist/* . ; echo Environment1 Created; fi; if [ ! -d "bazel-bin/scripts/package/twister2-dist" ]; then tar xzf bazel-bin/scripts/package/twister2-client.tar.gz; cp twister2-dist/* .; echo Enivronment2 Created; fi
+
+gather:
+	./bin/twister2 submit nodesmpi jar twister2-dist/examples/libexamples-java.jar edu.iu.dsc.tws.examples.task.TaskGather
+
+bcast:
+	./bin/twister2 submit nodesmpi jar twister2-dist/examples/libexamples-java.jar edu.iu.dsc.tws.examples.task.BroadcastTask
+
+juliet:
+	scp -r twister2 vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/twister2/
+
+fjuliet:
+	scp -r twister2 vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/
+
+tbscripts:
+	scp -r scripts vlabeyko@tempest.futuresystems.org:/N/u/vlabeyko/github/branch/twister2/
+
+tbjuliet:
+	scp -r twister2 vlabeyko@tempest.futuresystems.org:/N/u/vlabeyko/github/branch/twister2/
+
+tbcomms:
+	scp -r twister2/comms vlabeyko@tempest.futuresystems.org:/N/u/vlabeyko/github/branch/twister2/twister2/
+
+julietall:
+	scp -r . vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/
+
+executor:
+	scp -r twister2/executor vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github//forks/twister2/twister2/
+
+fexecutor:
+	scp -r twister2/executor vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
+
+tbexecutor:
+	scp -r twister2/executor vlabeyko@tempest.futuresystems.org:/N/u/vlabeyko/github/branch/twister2/twister2
+
+rshed:
+	scp -r twister2/resource-scheduler vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
+
+task:
+	scp -r twister2/task vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
+
+examples:
+	scp -r twister2/examples vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
+
+tbexamples:
+	scp -r twister2/examples vlabeyko@tempest.futuresystems.org:/N/u/vlabeyko/github/branch/twister2/twister2/
+
+comms:
+	scp -r twister2/comms vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
+
+api:
+	scp -r twister2/api vlabeyko@juliet.futuresystems.org:/N/u/vlabeyko/github/forks/twister2/twister2/
